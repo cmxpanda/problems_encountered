@@ -1,0 +1,14 @@
+bash: ./a.sh: /bin/bash^M: bad interpreter: No such file or directory的解决方法
+
+什么原因呢， 我们有理由怀疑是文件格式问题？ 我们用vim a.sh进入a.sh这个文件， 然后在底部模式下， 执行 :set ff 查看一下， 结果发现fileformat=dos, 看看， 果然是文件格式问题， 那怎么解决呢？
+
+方法一：vim a.sh进入a.sh后， 在底部模式下， 执行:set fileformat=unix后执行:x或者:wq保存修改。 然后就可以执行./a.sh运行脚本了。（我亲自试过， 是ok的）
+
+方法二：直接执行sed -i "s/\r//" a.sh来转化， 然后就可以执行./a.sh运行脚本了。（我亲自试过， 是ok的）
+
+方法三：直接执行dos2unix a.sh来转化， 然后就可以执行./a.sh运行脚本了。（我的linux上执行dos2unix ./a.sh失败， 但是不要放弃啊， 加个busybox就可以了）， 如下：
+
+dos2unix a.sh   
+bash: dos2unix: command not found  
+[taoge@localhost learn_shell]$ busybox dos2unix a.sh   
+[taoge@localhost learn_shell]$  
